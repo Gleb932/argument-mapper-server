@@ -1,0 +1,22 @@
+{
+  "name": "argumentmapperserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gleb932/argument_mapper_server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gleb932/argument_mapper_server/issues"
+  },
+  "homepage": "https://github.com/Gleb932/argument_mapper_server#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
