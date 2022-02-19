@@ -11,3 +11,11 @@ app.get('/', function(req, res) {
 app.listen(PORT, function() {
     console.log('Server is running on PORT:',PORT);
 });
+
+app.post('/register', function(req, res) {
+    res.status(200).send("Registration: " + req.body.login + " " + req.body.password);
+});
+
+app.post('/login', function(req, res) {
+    res.status(200).send("Login: " + req.body.login + " " + req.body.password);
+});
