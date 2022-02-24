@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/Gleb932/argument_mapper_server#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "body-parser": "^1.19.2",
+    "express": "^4.17.2",
+    "pg": "^8.7.3",
+    "pg-promise": "^10.11.1"
   }
 }
