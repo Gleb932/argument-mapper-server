@@ -1,7 +1,0 @@
-{
-    "user": "postgres",
-    "database": "argument_mapper",
-    "password": "qwerty",
-    "port": 5432,
-    "host": "localhost"
-}
