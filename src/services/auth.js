@@ -42,6 +42,9 @@ function authCheck(req, res, next)
             if (err) {
                 return res.status(401).json({ message: "Not authorized" });
             } else {
+                req.userID = decodedToken.userID;
+                req.username = decodedToken.username;
+                req.role = decodedToken.role;
                 next();
             }
         })

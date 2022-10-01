@@ -23,7 +23,7 @@ async function register(req, res) {
         res.json({message:"failed to create user"})
         return;
     }
-    res.status(200);
+    res.sendStatus(200);
     //mailing.sendVerification(req.body.email, id, emailVerificationStr);
 }
 
@@ -62,7 +62,7 @@ async function verify(req, res) {
     let verification_str = req.query.verification_str;
     if(!userID || !verification_str)
     {
-        res.status(400);
+        res.sendStatus(400);
         return;
     }
     let dbRes = await db.activateAccount(userID, verification_str);

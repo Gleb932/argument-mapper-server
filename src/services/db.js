@@ -84,4 +84,48 @@ async function getSaltAndPassword(username)
     .finally(()=>client.release());
 }
 
-module.exports = { createUser, activateAccount, getSaltAndPassword, getUserByID, getUserByUsername };
+async function getRoles()
+{
+    let client = await pool.connect();
+    let res = await client.query('SELECT * FROM roles;').catch(e => {console.error(e.stack); return null});
+    client.release();
+    return res;
+}
+
+async function getCurrentSessionsCount(userID)
+{
+    let client = await pool.connect();
+    let result = await client.query("SELECT COUNT(*) FROM sessions WHERE owner_id = $1;", [userID])
+    .catch(e => {
+        console.error(e.stack);
+        return null;
+    });
+    client.release();
+    return result;
+}
+
+async function createSession(userID, expirationTimestampStr, mapTree)
+{
+    let client = await pool.connect();
+    let result = await client.query("INSERT INTO sessions(owner_id, expiration, map_tree) VALUES ($1, $2, $3) RETURNING id;", [userID, expirationTimestampStr, mapTree])
+    .catch(e => {
+        console.error(e.stack);
+        return null;
+    });
+    client.release();
+    return result;
+}
+
+async function deleteSession(userID, sessionID)
+{
+    let client = await pool.connect();
+    let result = await client.query("DELETE FROM sessions WHERE id = $1 AND owner_id = $2;", [sessionID, userID])
+    .catch(e => {
+        console.error(e.stack);
+        return null;
+    });
+    client.release();
+    return result;
+}
+
+module.exports = { createUser, activateAccount, getSaltAndPassword, getUserByID, getUserByUsername, getRoles, getCurrentSessionsCount, createSession, deleteSession };

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Gleb932/argument_mapper_server#readme",
   "dependencies": {
     "body-parser": "^1.19.2",
+    "dayjs": "^1.11.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
