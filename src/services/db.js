@@ -104,10 +104,10 @@ async function getCurrentSessionsCount(userID)
     return result;
 }
 
-async function createSession(userID, expirationTimestampStr, mapTree)
+async function createSession(userID, creationTimestampStr, mapTree)
 {
     let client = await pool.connect();
-    let result = await client.query("INSERT INTO sessions(owner_id, expiration, map_tree) VALUES ($1, $2, $3) RETURNING id;", [userID, expirationTimestampStr, mapTree])
+    let result = await client.query("INSERT INTO sessions(owner_id, creation_date, map_tree) VALUES ($1, $2, $3) RETURNING id;", [userID, creationTimestampStr, mapTree])
     .catch(e => {
         console.error(e.stack);
         return null;
@@ -128,4 +128,18 @@ async function deleteSession(userID, sessionID)
     return result;
 }
 
-module.exports = { createUser, activateAccount, getSaltAndPassword, getUserByID, getUserByUsername, getRoles, getCurrentSessionsCount, createSession, deleteSession };
+async function getSession(sessionID)
+{
+    let client = await pool.connect();
+    let result = client.query("SELECT * FROM sessions WHERE id = $1", [sessionID])
+    .catch(e => {
+        console.error(e.stack);
+        return null;
+    })
+    .then(
+        client.release()
+    );
+    return result;
+}
+
+module.exports = { createUser, activateAccount, getSaltAndPassword, getUserByID, getUserByUsername, getRoles, getCurrentSessionsCount, createSession, deleteSession, getSession };

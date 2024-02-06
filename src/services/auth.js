@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const ws = require('ws');
 const jwt = require('jsonwebtoken');
 
 async function hash(password) {
@@ -53,6 +54,35 @@ function authCheck(req, res, next)
     }
 }
 
+function websocketAuthCheck(req, socket, head)
+{
+    //case-sensitive, req is IncomingMessage class
+    const authHeader = req.headers['authorization'];
+    if(!authHeader)
+    {
+        socket.close(1008, "No token provided");
+        return false;
+    }
+    
+    const token = authHeader.split(' ')[1]
+    if (token) {
+        try {
+            const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+            socket.userID = decodedToken.userID;
+            socket.username = decodedToken.username;
+            socket.role = decodedToken.role;
+            return true
+        } catch (err) {
+            console.error(err)
+            socket.close(1008, "Not authorized");
+            return false
+        }
+    } else {
+        socket.close(1008, "No token provided");
+        return false;
+    }
+}
+
 module.exports = {
-    hash, verify, createToken, authCheck
+    hash, verify, createToken, authCheck, websocketAuthCheck
 };

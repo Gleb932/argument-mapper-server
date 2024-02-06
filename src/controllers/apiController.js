@@ -26,6 +26,31 @@ async function test(req, res) {
     res.status(200).send("test");
 }
 
+async function getSessionMap(req, res){
+    let sessionID = req.params.sessionID;
+    if(!sessionID)
+    {
+        return res.status(400).json({message:"missing sessionID"});
+    }
+    let sessionData = await db.getSession(sessionID).then(res => {
+        if(!res || res.rowCount == 0)
+        {
+            return null;
+        }
+        return res;
+    }).catch( e => {
+        console.error(e.stack);
+        return null;
+    });
+    if(sessionData)
+    {
+        console.log(sessionData)
+        return res.status(200).json({sessionMap:sessionData.rows[0]["map_tree"]});
+    }else{
+        return res.status(404).json({message:"session not found"});
+    }
+}
+
 async function createSession(req, res) {
     let role = roles[req.role];
     let mapTree = req.body.mapTree;
@@ -59,5 +84,5 @@ async function deleteSession(req, res) {
 }
 
 module.exports = {
-    test, createSession, deleteSession
+    test, createSession, deleteSession, getSessionMap
 };

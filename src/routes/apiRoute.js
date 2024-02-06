@@ -6,6 +6,7 @@ const apiController = require("../controllers/apiController")
 router.use(auth.authCheck);
 
 router.get('/test', apiController.test)
+router.get('/session/:sessionID', apiController.getSessionMap)
 router.post('/session', apiController.createSession)
 router.delete('/session/:sessionID', apiController.deleteSession)
 
