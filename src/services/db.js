@@ -142,4 +142,18 @@ async function getSession(sessionID)
     return result;
 }
 
-module.exports = { createUser, activateAccount, getSaltAndPassword, getUserByID, getUserByUsername, getRoles, getCurrentSessionsCount, createSession, deleteSession, getSession };
+async function updateSessionMap(sessionID, mapString)
+{
+    let client = await pool.connect();
+    let result = client.query("UPDATE sessions SET map_tree = $1 WHERE id = $2", [mapString, sessionID])
+    .catch(e => {
+        console.error(e.stack);
+        return null;
+    })
+    .then(
+        client.release()
+    );
+    return result !== null;
+}
+
+module.exports = { createUser, activateAccount, getSaltAndPassword, getUserByID, getUserByUsername, getRoles, getCurrentSessionsCount, createSession, deleteSession, getSession, updateSessionMap };

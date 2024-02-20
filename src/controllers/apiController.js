@@ -1,5 +1,5 @@
 const db = require('../services/db');
-const sessions = require('../services/sessions');
+const session = require('../services/session');
 
 let roles;
 
@@ -44,7 +44,6 @@ async function getSessionMap(req, res){
     });
     if(sessionData)
     {
-        console.log(sessionData)
         return res.status(200).json({sessionMap:sessionData.rows[0]["map_tree"]});
     }else{
         return res.status(404).json({message:"session not found"});
@@ -64,7 +63,7 @@ async function createSession(req, res) {
         res.status(403).json({message:"exceeded allowed count of sessions"});
         return;
     }
-    let sessionID = await sessions.createSession(req.userID, mapTree);
+    let sessionID = await session.createSession(req.userID, mapTree);
     if(sessionID)
     {
         return res.status(200).json({sessionID:sessionID});
