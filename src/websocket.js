@@ -71,8 +71,8 @@ function websocketServer(expressServer)
                     if(res.result == 200)
                     {
                         websocketServer.clients.forEach(function(client) {
-                            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                                client.send(request);
+                            if (client !== ws && client.readyState === ws.OPEN) {
+                                client.send(message.toString());
                             }
                         });
                     }
