@@ -44,7 +44,7 @@ async function getSessionMap(req, res){
     });
     if(sessionData)
     {
-        return res.status(200).json({sessionMap:sessionData.rows[0]["map_tree"]});
+        return res.status(200).json(sessionData.rows[0]);
     }else{
         return res.status(404).json({message:"session not found"});
     }
